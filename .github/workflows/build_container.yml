@@ -34,11 +34,11 @@ jobs:
           packer build base-template.json
         working-directory: packer
         env:
-          DOCKER_TAG: {{ github.ref_name }}
+          DOCKER_TAG: ${{ github.ref_name }}
       - name: Build and push vnc image
         run: |
           export DOCKER_REPOSITORY="${REGISTRY}/${IMAGE_NAME}"
           packer build vnc-template.json
         working-directory: packer
         env:
-          DOCKER_TAG: {{ github.ref_name }}
+          DOCKER_TAG: ${{ github.ref_name }}
