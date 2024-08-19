@@ -55,7 +55,7 @@ build {
       repository = "${var.docker_repository}"
       tags       = ["${var.docker_tag}"]
     }
-    post-processor "docker-push" {
-    }
+#    post-processor "docker-push" {
+#    }
   }
 }
