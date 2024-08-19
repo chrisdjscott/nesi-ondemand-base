@@ -15,16 +15,7 @@
   shell: >-
     mv /opt/websockify-{{ websockify_version }} /opt/websockify
 
-- name: List websockify dir
-  command: ls -l /opt/websockify
-
-- name: Python version
-  command: python3 --version
-
-- name: pip freeze
-  command:  python3 -m pip freeze
-
-- name: Run setup.py
+- name: Install websockify with pip
   shell: >-
     python3 -m pip install .
   run_once: true

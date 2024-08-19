@@ -45,7 +45,7 @@ jobs:
         working-directory: packer
       - name: Build and push vnc image
         run: |
-          export DOCKER_REPOSITORY="${REGISTRY}/${IMAGE_NAME}"
+          export PKR_VAR_docker_repository="${REGISTRY}/${IMAGE_NAME}"
           packer build vnc-template.pkr.hcl
         working-directory: packer
         env:
