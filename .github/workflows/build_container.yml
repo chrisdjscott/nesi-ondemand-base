@@ -45,12 +45,12 @@ jobs:
         working-directory: packer
       - name: Build and push vnc image
         run: |
-          export PKR_VAR_docker_repository="${REGISTRY}/nesi-ondemand-vnc"
+          export PKR_VAR_docker_repository="${REGISTRY}/chrisdjscott/nesi-ondemand-vnc"
           packer build vnc-template.pkr.hcl
         working-directory: packer
         env:
           PKR_VAR_docker_tag: ${{ github.ref_name }}
       - name: push image
-        run: docker image push "${REGISTRY}/nesi-ondemand-vnc:${PKR_VAR_docker_tag}"
+        run: docker image push "${REGISTRY}/chrisdjscott/nesi-ondemand-vnc:${PKR_VAR_docker_tag}"
         env:
           PKR_VAR_docker_tag: ${{ github.ref_name }}
