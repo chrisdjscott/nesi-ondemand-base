@@ -24,6 +24,8 @@ jobs:
         uses: hashicorp/setup-packer@main
       - name: Install packer docker plugin
         run: packer plugins install github.com/hashicorp/docker
+      - name: Install packer ansible plugin
+        run: packer plugins install github.com/hashicorp/ansible
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
