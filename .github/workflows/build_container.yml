@@ -8,6 +8,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  REPO_OWNER: ${{ github.repository_owner }}
 
 jobs:
   build-and-push-image:
@@ -20,32 +21,29 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Setup `packer`
+      - name: Setup packer
         uses: hashicorp/setup-packer@main
-#      - name: Install packer docker plugin
-#        run: packer plugins install github.com/hashicorp/docker
-#      - name: Install packer ansible plugin
-#        run: packer plugins install github.com/hashicorp/ansible
-#      - name: Log in to the Container registry
-#        uses: docker/login-action@v3
-#        with:
-#          registry: ${{ env.REGISTRY }}
-#          username: ${{ github.actor }}
-#          password: ${{ secrets.GITHUB_TOKEN }}
-#      - name: Build and push base image
-#        run: |
-#          export DOCKER_REPOSITORY="${REGISTRY}/${IMAGE_NAME}"
-#          packer build base-template.json
-#        working-directory: packer
-#        env:
-#          DOCKER_TAG: ${{ github.ref_name }}
+      - name: Initialise packer for base image
+        run:
+          packer init -upgrade base-template.pkr.hcl
+        working-directory: packer
+      - name: Build and push base image
+        run: |
+          export PKR_VAR_docker_repository="${REGISTRY}/${REPO_OWNER}/nesi-docker-base"
+          packer build base-template.pkr.hcl
+        working-directory: packer
+        env:
+          PKR_VAR_docker_tag: ${{ github.ref_name }}
+          PKR_VAR_docker_username: ${{ github.actor }}
+          PKR_VAR_docker_password: ${{ secrets.GITHUB_TOKEN }}
+          PKR_VAR_docker_server: ${{ env.REGISTRY }}
       - name: Initialise packer for vnc image
         run:
           packer init -upgrade vnc-template.pkr.hcl
         working-directory: packer
       - name: Build and push vnc image
         run: |
-          export PKR_VAR_docker_repository="${REGISTRY}/chrisdjscott/nesi-ondemand-vnc"
+          export PKR_VAR_docker_repository="${REGISTRY}/${REPO_OWNER}/nesi-ondemand-vnc"
           packer build vnc-template.pkr.hcl
         working-directory: packer
         env:
@@ -53,7 +51,3 @@ jobs:
           PKR_VAR_docker_username: ${{ github.actor }}
           PKR_VAR_docker_password: ${{ secrets.GITHUB_TOKEN }}
           PKR_VAR_docker_server: ${{ env.REGISTRY }}
-#      - name: push image
-#        run: docker image push "${REGISTRY}/chrisdjscott/nesi-ondemand-vnc:${PKR_VAR_docker_tag}"
-#        env:
-#          PKR_VAR_docker_tag: ${{ github.ref_name }}

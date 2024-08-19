@@ -60,7 +60,7 @@ build {
 
   provisioner "ansible" {
     extra_arguments = ["--extra-vars", "ansible_host=${var.ansible_host} ansible_connection=${var.ansible_connection}"]
-    playbook_file   = "../ansible/vnc-image.yml"
+    playbook_file   = "../ansible/base-image.yml"
     user            = "root"
   }
 
