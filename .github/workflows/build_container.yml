@@ -55,6 +55,9 @@ jobs:
           echo "Tags are: \"${DOCKER_TAGS}\""
           echo "Labels are: \"${DOCKER_LABELS}\""
           echo "Image name: \"${IMAGE_NAME}\""
+          echo "repository is: \"${REGISTRY}/${IMAGE_NAME}\""
+          echo "tag is: \"${IMAGE_TAG}\""
         env:
           DOCKER_TAGS: "${{ steps.meta.outputs.tags }}"
           DOCKER_LABELS: "${{ steps.meta.outputs.labels }}"
+          IMAGE_TAG: "${{ github.ref_name }}"
