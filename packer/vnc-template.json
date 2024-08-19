@@ -1,7 +1,9 @@
 {
     "variables": {
       "ansible_host": "default",
-      "ansible_connection": "docker"
+      "ansible_connection": "docker",
+      "docker_repositoy": "{{env `DOCKER_REPOSITORY`}}",
+      "docker_tag": "{{env `DOCKER_TAG`}}"
     },
     "builders": [
       {
@@ -40,8 +42,11 @@
       [
         {
           "type": "docker-tag",
-          "repository": "CHANGEME_REPOSITORY",
-          "tag": "CHANGEME_TAG"
+          "repository": "{{user `docker_repositoy`}}",
+          "tag": "{{user `docker_tag`}}"
+        },
+        {
+          "type": "docker-push"
         }
       ]
     ]
