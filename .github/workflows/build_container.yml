@@ -26,12 +26,12 @@ jobs:
 #        run: packer plugins install github.com/hashicorp/docker
 #      - name: Install packer ansible plugin
 #        run: packer plugins install github.com/hashicorp/ansible
-      - name: Log in to the Container registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Log in to the Container registry
+#        uses: docker/login-action@v3
+#        with:
+#          registry: ${{ env.REGISTRY }}
+#          username: ${{ github.actor }}
+#          password: ${{ secrets.GITHUB_TOKEN }}
 #      - name: Build and push base image
 #        run: |
 #          export DOCKER_REPOSITORY="${REGISTRY}/${IMAGE_NAME}"
@@ -50,7 +50,10 @@ jobs:
         working-directory: packer
         env:
           PKR_VAR_docker_tag: ${{ github.ref_name }}
-      - name: push image
-        run: docker image push "${REGISTRY}/chrisdjscott/nesi-ondemand-vnc:${PKR_VAR_docker_tag}"
-        env:
-          PKR_VAR_docker_tag: ${{ github.ref_name }}
+          PKR_VAR_docker_username: ${{ github.actor }}
+          PKR_VAR_docker_password: ${{ secrets.GITHUB_TOKEN }}
+          PKR_VAR_docker_server: ${{ env.REGISTRY }}
+#      - name: push image
+#        run: docker image push "${REGISTRY}/chrisdjscott/nesi-ondemand-vnc:${PKR_VAR_docker_tag}"
+#        env:
+#          PKR_VAR_docker_tag: ${{ github.ref_name }}

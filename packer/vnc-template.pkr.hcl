@@ -31,6 +31,20 @@ variable "docker_tag" {
   default = "latest"
 }
 
+variable "docker_username" {
+    type = string
+}
+
+variable "docker_password" {
+    type      = string
+    sensitive = true
+}
+
+variable "docker_server" {
+    type    = string
+    default = "ghcr.io"
+}
+
 source "docker" "rocky" {
   commit      = "true"
   image       = "rockylinux:9.3"
@@ -55,7 +69,11 @@ build {
       repository = "${var.docker_repository}"
       tags       = ["${var.docker_tag}"]
     }
-#    post-processor "docker-push" {
-#    }
+    post-processor "docker-push" {
+      login          = true
+      login_username = "${var.docker_username}"
+      login_password = "${var.docker_password}"
+      login_server   = "${var.docker_server}"
+    }
   }
 }
