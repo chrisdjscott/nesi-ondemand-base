@@ -50,7 +50,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-      - name: Change repo path in packer definition
+      - name: Print some useful values
         run: |
           echo "Tags are: \"${DOCKER_TAGS}\""
           echo "Labels are: \"${DOCKER_LABELS}\""
@@ -61,3 +61,25 @@ jobs:
           DOCKER_TAGS: "${{ steps.meta.outputs.tags }}"
           DOCKER_LABELS: "${{ steps.meta.outputs.labels }}"
           IMAGE_TAG: "${{ github.ref_name }}"
+      - name: Configure repository name for base
+        run: sed -i "s|CHANGEME_REPOSITORY|${REGISTRY}/${IMAGE_NAME}|" base-template.json
+        working-directory: packer
+      - name: Configure tag for base
+        run: sed -i "s|CHANGEME_TAG|${IMAGE_TAG}|" base-template.json
+        working-directory: packer
+        env:
+          IMAGE_TAG: "${{ github.ref_name }}"
+      - name: Configure repository name for vnc
+        run: sed -i "s|CHANGEME_REPOSITORY|${REGISTRY}/${IMAGE_NAME}|" vnc-template.json
+        working-directory: packer
+      - name: Configure tag for vnc
+        run: sed -i "s|CHANGEME_TAG|${IMAGE_TAG}|" vnc-template.json
+        working-directory: packer
+        env:
+          IMAGE_TAG: "${{ github.ref_name }}"
+      - name: Show build file for vnc
+        run: cat vnc-template.json
+        working-directory: packer
+      - name: Show build file for base
+        run: cat base-template.json
+        working-directory: packer

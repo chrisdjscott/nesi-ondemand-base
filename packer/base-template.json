@@ -40,8 +40,8 @@
       [
         {
           "type": "docker-tag",
-          "repository": "ghcr.io/lbrick/nesi-docker-base/nesi-docker-base",
-          "tag": "0.7.1"
+          "repository": "CHANGEME_REPOSITORY",
+          "tag": "CHANGEME_TAG"
         }
       ]
     ]
