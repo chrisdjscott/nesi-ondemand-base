@@ -52,6 +52,9 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       - name: Change repo path in packer definition
         run: |
-          echo "Tags are: \"{{ steps.meta.outputs.tags }}\""
-          echo "Labels are: \"{{ steps.meta.outputs.labels }}\""
+          echo "Tags are: \"${DOCKER_TAGS}\""
+          echo "Labels are: \"${DOCKER_LABELS}\""
           echo "Image name: \"${IMAGE_NAME}\""
+        env:
+          DOCKER_TAGS: "${{ steps.meta.outputs.tags }}"
+          DOCKER_LABELS: "${{ steps.meta.outputs.labels }}"
