@@ -42,6 +42,7 @@ jobs:
       - name: Initialise packer for vnc image
         run:
           packer init -upgrade vnc-template.pkr.hcl
+        working-directory: packer
       - name: Build and push vnc image
         run: |
           export DOCKER_REPOSITORY="${REGISTRY}/${IMAGE_NAME}"
